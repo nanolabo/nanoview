@@ -7,6 +7,11 @@ pub use mesh::{MeshPartData, MeshPartGeometry, mesh_parts_bbox};
 pub use self::gltf::GltfLoadError;
 pub use resources::{ResourceLoader, Resources};
 
+// reexports
+pub use wgpu;
+pub use futures;
+pub use ultraviolet;
+
 mod camera;
 mod compute_tangents;
 mod gltf;
