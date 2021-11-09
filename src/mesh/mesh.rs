@@ -1,5 +1,6 @@
 use ultraviolet::{Mat4, Rotor3, Vec3};
 use wgpu::util::DeviceExt;
+use nanomesh::{Box3, Vector3};
 
 use super::{
     mesh_part::{MeshPart, MeshPartData, mesh_parts_bbox},
@@ -11,8 +12,7 @@ pub struct Mesh {
     pub rotation: Rotor3,
     pub scale: Vec3,
     pub parts: Vec<MeshPart>,
-
-    pub bbox: ([f32; 3], [f32; 3]),
+    pub bbox: Box3,
 
     bind_group: wgpu::BindGroup,
     uniform_buf: wgpu::Buffer,
@@ -60,8 +60,10 @@ impl Mesh {
             position: Vec3::zero(),
             rotation: Rotor3::identity(),
             scale: Vec3::broadcast(1.0),
-            bbox: bbox,
-            
+            bbox: Box3::new(
+                Vector3::new(bbox.0[0].into(), bbox.0[1].into(), bbox.0[2].into()),
+                Vector3::new(bbox.1[0].into(), bbox.1[1].into(), bbox.1[2].into())),
+
             parts,
             bind_group,
             uniform_buf,
