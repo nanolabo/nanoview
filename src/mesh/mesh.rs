@@ -2,7 +2,7 @@ use ultraviolet::{Mat4, Rotor3, Vec3};
 use wgpu::util::DeviceExt;
 
 use super::{
-    mesh_part::{MeshPart, MeshPartData},
+    mesh_part::{MeshPart, MeshPartData, mesh_parts_bbox},
     mesh_pass::MeshPass,
 };
 
@@ -11,6 +11,8 @@ pub struct Mesh {
     pub rotation: Rotor3,
     pub scale: Vec3,
     pub parts: Vec<MeshPart>,
+
+    pub bbox: ([f32; 3], [f32; 3]),
 
     bind_group: wgpu::BindGroup,
     uniform_buf: wgpu::Buffer,
@@ -44,6 +46,8 @@ impl Mesh {
             ],
         });
 
+        let bbox = mesh_parts_bbox(mesh_parts);
+
         let mut parts = Vec::new();
         for part_data in mesh_parts {
             parts.push(MeshPart::new(
@@ -56,7 +60,8 @@ impl Mesh {
             position: Vec3::zero(),
             rotation: Rotor3::identity(),
             scale: Vec3::broadcast(1.0),
-
+            bbox: bbox,
+            
             parts,
             bind_group,
             uniform_buf,

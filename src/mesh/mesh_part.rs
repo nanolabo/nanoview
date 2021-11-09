@@ -54,10 +54,10 @@ impl MeshPart {
 }
 
 pub fn mesh_parts_bbox(parts: &[MeshPartData]) -> ([f32; 3], [f32; 3]) {
-    let (mut mins, mut maxes) = parts[0].geometry.bounding_box();
+    let (mut mins, mut maxes) = ([f32::MAX; 3], [f32::MIN; 3]);
 
-    for part in &parts[1..] {
-        let (mut part_mins, mut part_maxes) = parts[0].geometry.bounding_box();
+    for part in &parts[0..] {
+        let (part_mins, part_maxes) = part.geometry.bounding_box();
 
         mins[0] = f32::min(mins[0], part_mins[0]);
         mins[1] = f32::min(mins[1], part_mins[1]);
