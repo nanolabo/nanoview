@@ -15,7 +15,14 @@ impl Camera {
 
         Camera {
             proj,
+            position: Vec3::zero(),
+            view: Mat4::identity(),
+        }
+    }
 
+    pub fn new_from_projection(proj: Mat4) -> Self {
+        Camera {
+            proj,
             position: Vec3::zero(),
             view: Mat4::identity(),
         }
@@ -25,6 +32,10 @@ impl Camera {
         self.proj = ultraviolet::projection::rh_yup::perspective_gl(
             f32::to_radians(45.0), aspect_ratio, 0.001, 1000.0,
         );
+    }
+
+    pub fn set_projection(&mut self, proj: Mat4) {
+        self.proj = proj;
     }
 
     pub fn look_at(
